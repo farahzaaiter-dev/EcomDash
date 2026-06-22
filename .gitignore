@@ -3,3 +3,6 @@ data-processing/venv/
 node_modules/
 __pycache__/
 .env
+desktop.ini
+data-processing/raw/
+data-processing/processed/
