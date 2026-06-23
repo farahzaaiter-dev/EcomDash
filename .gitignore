@@ -3,4 +3,10 @@ data-processing/venv/
 node_modules/
 __pycache__/
 .env
+<<<<<<< HEAD
 
+=======
+desktop.ini
+data-processing/raw/
+data-processing/processed/
+>>>>>>> feature/data-cleaned
