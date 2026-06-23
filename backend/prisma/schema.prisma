@@ -20,14 +20,14 @@ model Customer {
   city       String
   state      String
 
-  orders     Order[]
+  orders Order[]
 
   @@map("customers")
 }
 
 model Category {
-  id           Int      @id
-  categoryName String   @map("category_name")
+  id           Int    @id @map("category_id")
+  categoryName String @map("category_name")
 
   products Product[]
 
@@ -35,40 +35,39 @@ model Category {
 }
 
 model Product {
-  id         Int     @id
+  id         Int     @id @map("product_id")
   name       String  @map("product_name")
   categoryId Int     @map("category_id")
   price      Float
   costPrice  Float   @map("cost_price")
 
   category   Category @relation(fields: [categoryId], references: [id])
-
   orderItems OrderItem[]
 
   @@map("products")
 }
 
 model Order {
-  id            Int      @id
-  customerId    Int      @map("customer_id")
-  status        String
-  paymentMethod String   @map("payment_method")
+  id            Int    @id @map("order_id")
+  customerId    Int    @map("customer_id")
+  status        String @map("order_status")
+  paymentMethod String @map("payment_method")
 
-  customer      Customer @relation(fields: [customerId], references: [id])
-  orderItems    OrderItem[]
+  customer   Customer   @relation(fields: [customerId], references: [id])
+  orderItems OrderItem[]
 
   @@map("orders")
 }
 
 model OrderItem {
-  id         Int     @id
-  orderId    Int     @map("order_id")
-  productId  Int     @map("product_id")
-  quantity   Int
-  unitPrice  Float   @map("unit_price")
+  id        Int   @id @map("order_item_id")
+  orderId   Int   @map("order_id")
+  productId Int   @map("product_id")
+  quantity  Int
+  unitPrice Float @map("unit_price")
 
-  order       Order   @relation(fields: [orderId], references: [id])
-  product     Product @relation(fields: [productId], references: [id])
+  order   Order   @relation(fields: [orderId], references: [id])
+  product Product @relation(fields: [productId], references: [id])
 
   @@map("order_items")
 }
