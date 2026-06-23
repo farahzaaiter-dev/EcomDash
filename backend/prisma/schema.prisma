@@ -25,12 +25,23 @@ model Customer {
   @@map("customers")
 }
 
+model Category {
+  id           Int      @id
+  categoryName String   @map("category_name")
+
+  products Product[]
+
+  @@map("categories")
+}
+
 model Product {
-  id        Int     @id
-  name      String
-  category  String
-  price     Float
-  costPrice Float   @map("cost_price")
+  id         Int     @id
+  name       String  @map("product_name")
+  categoryId Int     @map("category_id")
+  price      Float
+  costPrice  Float   @map("cost_price")
+
+  category   Category @relation(fields: [categoryId], references: [id])
 
   orderItems OrderItem[]
 
