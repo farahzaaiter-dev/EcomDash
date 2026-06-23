@@ -20,9 +20,10 @@ data-processing/
     ├── customers_clean.csv
     ├── orders_clean.csv
     ├── order_items_clean.csv
-    ├── products_clean.csv
-    └── returns_clean.csv
+    └── products_clean.csv
 ```
+
+Note: `returns` is not cleaned/processed - we're not using that table for this project, so it's skipped on purpose (the code for it is still in `clean_data.py`, just commented out, in case we need it later).
 
 ## How to run it
 
@@ -37,12 +38,12 @@ It reads everything from `raw/` and writes the cleaned files into `processed/`. 
 
 Went table by table and fixed what was broken:
 
-- **categories**: just removed duplicate rows, nothing else wrong here
+- **categories**: just removed duplicate rows, kept `category_name` exactly as-is (not modifying it so the dataset still reflects the original wording)
 - **products**: removed rows with price or cost <= 0, removed products linked to a category_id that doesn't exist, added `margin_amount` and `margin_pct` columns
 - **customers**: cleaned up name/city/state capitalization, lowercased emails, parsed signup_date properly, removed 22 duplicate emails (same person registered more than once)
 - **orders**: removed 42 orders linked to a customer_id that isn't in the customers table, removed rows with invalid status or payment method
 - **order_items**: removed 71 rows linked to an order_id that got dropped, removed rows with quantity outside 1-5 or price <= 0, added `line_total`
-- **returns**: removed 7 rows linked to an order_item that got dropped, parsed return_date, removed rows with refund_amount <= 0
+- **returns**: not processed - we don't need this table for the project
 
 After cleaning each table, it also calculates and adds:
 - `order_total` and `item_count` on orders (sum/count from order_items)
@@ -57,7 +58,6 @@ After cleaning each table, it also calculates and adds:
 | customers | 5000 | 4978 | 22 |
 | orders | 9000 | 8958 | 42 |
 | order_items | 15000 | 14929 | 71 |
-| returns | 1500 | 1493 | 7 |
 
 ## Notes
 

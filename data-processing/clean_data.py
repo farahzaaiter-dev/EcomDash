@@ -19,7 +19,8 @@ def load(name):
 print("\ncategories")
 categories = load("categories.csv")
 categories.drop_duplicates(inplace=True)
-categories["category_name"] = categories["category_name"].str.strip()
+# leaving category_name as-is on purpose, keeping the original wording/casing
+# so the dataset still reflects how it actually came in
 categories.to_csv(os.path.join(PROC_DIR, "categories_clean.csv"), index=False)
 
 
@@ -135,27 +136,6 @@ order_items.to_csv(os.path.join(PROC_DIR, "order_items_clean.csv"), index=False)
 
 
 # ---------------------------------------------------------------
-# returns
-# ---------------------------------------------------------------
-print("\nreturns")
-returns = load("returns.csv")
-before = len(returns)
-returns.drop_duplicates(inplace=True)
-
-valid_items = order_items["order_item_id"].tolist()
-orphan_returns = (~returns["order_item_id"].isin(valid_items)).sum()
-returns = returns[returns["order_item_id"].isin(valid_items)]
-print(f"removed {orphan_returns} returns with unknown order_item_id")
-
-returns["return_date"] = pd.to_datetime(returns["return_date"], errors="coerce")
-returns.dropna(subset=["return_date"], inplace=True)
-returns = returns[returns["refund_amount"] > 0]
-
-print(f"removed {before - len(returns)} rows total")
-returns.to_csv(os.path.join(PROC_DIR, "returns_clean.csv"), index=False)
-
-
-# ---------------------------------------------------------------
 # add order_total / item_count to orders, and total_spent / order_count to customers
 # (needed these for the dashboard KPIs, easier to precompute here)
 # ---------------------------------------------------------------
@@ -195,7 +175,6 @@ files = {
     "orders_clean.csv": "orders",
     "order_items_clean.csv": "order_items",
     "products_clean.csv": "products",
-    "returns_clean.csv": "returns",
 }
 for fname, label in files.items():
     df = pd.read_csv(os.path.join(PROC_DIR, fname))
