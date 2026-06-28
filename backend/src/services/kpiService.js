@@ -2,10 +2,14 @@ const prisma = require('../config/db');
 
 // Chiffre d'affaires total
 const getRevenue = async () => {
-  const result = await prisma.orderItem.aggregate({
-    _sum: { unitPrice: true }
+  const items = await prisma.orderItem.findMany({
+    select: {
+      unitPrice: true,
+      quantity: true
+    }
   });
-  return result._sum.unitPrice;
+  const total = items.reduce((sum, item) => sum + item.unitPrice * item.quantity, 0);
+  return total;
 };
 
 // Nombre total de commandes
@@ -38,10 +42,27 @@ const getCustomersByCity = async () => {
 
 // Produits vendus par catégorie
 const getSalesByCategory = async () => {
-  return await prisma.orderItem.groupBy({
-    by: ['productId'],
-    _sum: { quantity: true }
+  const items = await prisma.orderItem.findMany({
+    select: {
+      quantity: true,
+      product: {
+        select: {
+          category: {
+            select: { categoryName: true }
+          }
+        }
+      }
+    }
   });
+
+  const result = {};
+  items.forEach(item => {
+    const category = item.product.category.categoryName;
+    if (!result[category]) result[category] = 0;
+    result[category] += item.quantity;
+  });
+
+  return result;
 };
 
 // Répartition des moyens de paiement
@@ -54,10 +75,28 @@ const getPaymentMethods = async () => {
 
 // Chiffre d'affaires par catégorie
 const getRevenueByCategory = async () => {
-  return await prisma.orderItem.groupBy({
-    by: ['productId'],
-    _sum: { unitPrice: true }
+  const items = await prisma.orderItem.findMany({
+    select: {
+      unitPrice: true,
+      quantity: true,
+      product: {
+        select: {
+          category: {
+            select: { categoryName: true }
+          }
+        }
+      }
+    }
   });
+
+  const result = {};
+  items.forEach(item => {
+    const category = item.product.category.categoryName;
+    if (!result[category]) result[category] = 0;
+    result[category] += item.unitPrice * item.quantity;
+  });
+
+  return result;
 };
 
 module.exports = {
