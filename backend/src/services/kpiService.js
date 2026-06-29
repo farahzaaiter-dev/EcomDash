@@ -19,12 +19,27 @@ const getTotalOrders = async () => {
 
 // Top 10 produits les plus vendus
 const getTopProducts = async () => {
-  return await prisma.orderItem.groupBy({
+  const items = await prisma.orderItem.groupBy({
     by: ['productId'],
     _sum: { quantity: true },
     orderBy: { _sum: { quantity: 'desc' } },
     take: 10
   });
+
+  const result = await Promise.all(
+    items.map(async (item) => {
+      const product = await prisma.product.findUnique({
+        where: { id: item.productId },
+        select: { name: true }
+      });
+      return {
+        productName: product.name,
+        totalQuantity: item._sum.quantity
+      };
+    })
+  );
+
+  return result;
 };
 
 // Nombre de clients
