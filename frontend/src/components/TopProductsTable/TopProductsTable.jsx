@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Card, Table, ProgressBar } from "react-bootstrap";
 import { getTopProducts } from "../../services/kpiService";
 
-const TopProductsTable = () => {
+const TopProductsTable = ({ limit = 4 }) => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
@@ -18,6 +18,7 @@ const TopProductsTable = () => {
     }
   };
 
+  const visibleProducts = products.slice(0, limit);
   const maxQuantity =
     products.length > 0
       ? Math.max(...products.map((p) => p.totalQuantity))
@@ -43,7 +44,7 @@ const TopProductsTable = () => {
 
           <tbody>
 
-            {products.map((product, index) => (
+            {visibleProducts.map((product, index) => (
               <tr key={index}>
 
                 <td>
