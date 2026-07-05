@@ -84,9 +84,6 @@ const Dashboard = () => {
         >
           Tableau de bord
         </h1>
-        <p className="text-secondary small mt-1">
-          Vue d'ensemble - Exercice 2024
-        </p>
       </div>
 
       <div className="d-flex flex-column gap-4">
