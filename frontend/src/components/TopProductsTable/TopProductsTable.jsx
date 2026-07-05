@@ -24,7 +24,7 @@ const TopProductsTable = () => {
       : 0;
 
   return (
-    <Card className="shadow-sm border-0 rounded-4 mt-4">
+    <Card className="shadow-sm border-0 rounded-4 mt-4 w-100">
       <Card.Body>
         <h5 className="fw-bold mb-4">
           TOP PRODUITS LES PLUS VENDUS

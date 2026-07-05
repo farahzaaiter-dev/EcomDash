@@ -70,10 +70,10 @@ export default function Navbar() {
             <button
               type="button"
               className="btn rounded-pill border-0 fw-semibold px-4 py-2"
-              style={getButtonStyle("customers")}
-              onClick={() => scrollToSection("customers")}
+              style={getButtonStyle("categories")}
+              onClick={() => scrollToSection("categories")}
             >
-              Clients
+              categories
             </button>
 
             <button
