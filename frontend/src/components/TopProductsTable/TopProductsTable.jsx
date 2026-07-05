@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Card, Table, ProgressBar } from "react-bootstrap";
 import { getTopProducts } from "../../services/kpiService";
 
-const TopProductsTable = ({ limit = 4 }) => {
+const TopProductsTable = () => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
@@ -14,11 +14,10 @@ const TopProductsTable = ({ limit = 4 }) => {
       const data = await getTopProducts();
       setProducts(data);
     } catch (error) {
-      console.error(error);
+      console.error("Erreur lors du chargement des produits :", error);
     }
   };
 
-  const visibleProducts = products.slice(0, limit);
   const maxQuantity =
     products.length > 0
       ? Math.max(...products.map((p) => p.totalQuantity))
@@ -27,13 +26,11 @@ const TopProductsTable = ({ limit = 4 }) => {
   return (
     <Card className="shadow-sm border-0 rounded-4 mt-4">
       <Card.Body>
-
         <h5 className="fw-bold mb-4">
-          TOP 10 PRODUITS LES PLUS VENDUS
+          TOP PRODUITS LES PLUS VENDUS
         </h5>
 
         <Table responsive hover borderless className="align-middle">
-
           <thead>
             <tr className="text-secondary">
               <th style={{ width: "70px" }}>#</th>
@@ -43,12 +40,9 @@ const TopProductsTable = ({ limit = 4 }) => {
           </thead>
 
           <tbody>
-
-            {visibleProducts.map((product, index) => (
-              <tr key={index}>
-
+            {products.map((product, index) => (
+              <tr key={product.productName}>
                 <td>
-
                   {index < 3 ? (
                     <span
                       className="rounded-circle d-inline-flex justify-content-center align-items-center fw-bold"
@@ -71,15 +65,12 @@ const TopProductsTable = ({ limit = 4 }) => {
                       {index + 1}
                     </span>
                   )}
-
                 </td>
 
                 <td>{product.productName}</td>
 
                 <td>
-
                   <div className="d-flex align-items-center justify-content-end">
-
                     <div
                       style={{
                         width: "80px",
@@ -87,26 +78,30 @@ const TopProductsTable = ({ limit = 4 }) => {
                       }}
                     >
                       <ProgressBar
-                        now={(product.totalQuantity / maxQuantity) * 100}
+                        now={
+                          maxQuantity > 0
+                            ? (product.totalQuantity / maxQuantity) * 100
+                            : 0
+                        }
                         style={{ height: "6px" }}
                       />
                     </div>
 
-                    <strong>
-                      {product.totalQuantity}
-                    </strong>
-
+                    <strong>{product.totalQuantity}</strong>
                   </div>
-
                 </td>
-
               </tr>
             ))}
 
+            {products.length === 0 && (
+              <tr>
+                <td colSpan="3" className="text-center text-muted py-4">
+                  Aucun produit trouvé.
+                </td>
+              </tr>
+            )}
           </tbody>
-
         </Table>
-
       </Card.Body>
     </Card>
   );
