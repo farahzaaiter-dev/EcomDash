@@ -3,7 +3,7 @@ import DashboardCards from "../components/DashboardCards/DashboardCards";
 import TopProductsTable from "../components/TopProductsTable/TopProductsTable";
 
 import RevenueByCategoryChart from "../components/RevenueByCategoryChart/RevenueByCategoryChart";
-
+import CustomersByCityChart from "../components/CustomersByCityChart/CustomersByCityChart";
 
 import { Row, Col } from "react-bootstrap";
 
@@ -32,26 +32,42 @@ const Dashboard = () => {
         <DashboardCards />
 
       </section>
-       {/* Produits */}
-      <section id="products">
 
+      {/* Produits */}
+      <section id="products" className="mb-5">
         <TopProductsTable />
-
       </section>
-      {/* Graphiques */}
-      <section id="charts" className="mt-5 mb-5" id="categories">
 
-        <Row className="g-4">
+      {/* Graphiques */}
+      <section id="categories" className="mt-5 mb-5">
+
+        {/* Première ligne */}
+        <Row className="g-4 mb-4">
 
           <Col lg={6} xs={12}>
             <RevenueByCategoryChart />
           </Col>
 
+          <Col lg={6} xs={12}>
+            {/* Future Chart */}
+          </Col>
+
+        </Row>
+
+        {/* Deuxième ligne */}
+        <Row  id ="payments" className="g-4">
+
+          <Col lg={6} xs={12}>
+            <CustomersByCityChart />
+          </Col>
+
+          <Col lg={6} xs={12}>
+            {/* Future Chart */}
+          </Col>
+
         </Row>
 
       </section>
-
-     
 
     </MainLayout>
   );

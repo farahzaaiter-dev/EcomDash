@@ -73,7 +73,7 @@ export default function Navbar() {
               style={getButtonStyle("categories")}
               onClick={() => scrollToSection("categories")}
             >
-              categories
+              Categories
             </button>
 
             <button
@@ -82,7 +82,7 @@ export default function Navbar() {
               style={getButtonStyle("payments")}
               onClick={() => scrollToSection("payments")}
             >
-              Paiements
+              Paiements et Clients
             </button>
 
           </div>
