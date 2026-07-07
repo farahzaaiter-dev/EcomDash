@@ -4,6 +4,8 @@ import TopProductsTable from "../components/TopProductsTable/TopProductsTable";
 
 import RevenueByCategoryChart from "../components/RevenueByCategoryChart/RevenueByCategoryChart";
 import CustomersByCityChart from "../components/CustomersByCityChart/CustomersByCityChart";
+import ProductsByCategoryChart from "../components/ProductsByCategoryChart/ProductsByCategoryChart";
+import PaymentMethodsChart from "../components/PaymentMethodsChart/PaymentMethodsChart";
 
 import { Row, Col } from "react-bootstrap";
 
@@ -49,7 +51,7 @@ const Dashboard = () => {
           </Col>
 
           <Col lg={6} xs={12}>
-            {/* Future Chart */}
+            <ProductsByCategoryChart />
           </Col>
 
         </Row>
@@ -62,7 +64,7 @@ const Dashboard = () => {
           </Col>
 
           <Col lg={6} xs={12}>
-            {/* Future Chart */}
+            <PaymentMethodsChart />
           </Col>
 
         </Row>
