@@ -13,16 +13,16 @@ import {
 import { getCustomersByCity } from "../../services/kpiService";
 
 const COLORS = [
-  "#2563eb",
-  "#3b82f6",
-  "#60a5fa",
-  "#93c5fd",
-  "#1d4ed8",
-  "#1e40af",
-  "#2563eb",
-  "#3b82f6",
-  "#60a5fa",
-  "#93c5fd",
+  "#F59E0B",
+  "#FBBF24",
+  "#FCD34D",
+  "#FDE68A",
+  "#EAB308",
+  "#D97706",
+  "#F97316",
+  "#FDBA74",
+  "#FACC15",
+  "#FEF08A",
 ];
 
 const CustomersByCityChart = () => {

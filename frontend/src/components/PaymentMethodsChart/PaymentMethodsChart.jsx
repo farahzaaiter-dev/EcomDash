@@ -39,6 +39,7 @@ const PaymentMethodsChart = () => {
     }
   };
 
+  // Total des paiements
   const total = data.reduce((sum, item) => sum + item.value, 0);
 
   return (
@@ -73,19 +74,25 @@ const PaymentMethodsChart = () => {
                 </Pie>
 
                 <Tooltip
-                  formatter={(value) => [`${value} paiements`, "Nombre"]}
+                  formatter={(value) => {
+                    const percent = total
+                      ? ((value / total) * 100).toFixed(1)
+                      : 0;
+
+                    return [`${value} paiements (${percent}%)`, "Nombre"];
+                  }}
                 />
               </PieChart>
             </ResponsiveContainer>
           </div>
 
-          {/* Custom Legend */}
+          {/* Légende */}
           <div style={{ width: "45%" }}>
             {data.map((item, index) => {
-                const percentages = [51, 22, 14, 8];
+              const percent = total
+                ? ((item.value / total) * 100).toFixed(1)
+                : 0;
 
-                const percent = percentages[index];
-                
               return (
                 <div
                   key={index}

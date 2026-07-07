@@ -23,19 +23,11 @@ const ProductsByCategoryChart = () => {
     try {
       const result = await getSalesByCategory();
 
-      const categoryNames = {
-  "Beauty/Cosmetics": "Hauts",
-  "Apparel/Fashion": "Bas",
-  "Food & Beverages": "Chaussures",
-  "Home & Kitchen Furniture": "Accessoires",
-  "Electronics": "Tricots",
-  "Toys": "Robes",
-};
-
-const chartData = Object.entries(result).map(([category, products]) => ({
-  category: categoryNames[category] || category,
-  products,
-}));
+      // Les noms des catégories viennent directement de la base de données
+      const chartData = Object.entries(result).map(([category, products]) => ({
+        category,
+        products,
+      }));
 
       setData(chartData);
     } catch (error) {
@@ -46,7 +38,6 @@ const chartData = Object.entries(result).map(([category, products]) => ({
   return (
     <Card className="shadow-sm border-0 rounded-4 h-100">
       <Card.Body>
-
         <h5 className="fw-bold mb-4">
           PRODUITS VENDUS PAR CATÉGORIE
         </h5>
@@ -69,7 +60,7 @@ const chartData = Object.entries(result).map(([category, products]) => ({
             <YAxis
               type="category"
               dataKey="category"
-              width={140}
+              width={160}
               tick={{ fontSize: 14 }}
             />
 
@@ -82,7 +73,6 @@ const chartData = Object.entries(result).map(([category, products]) => ({
             />
           </BarChart>
         </ResponsiveContainer>
-
       </Card.Body>
     </Card>
   );
