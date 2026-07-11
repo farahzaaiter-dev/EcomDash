@@ -3,14 +3,13 @@
 
 // Get a free hosted Postgres database in seconds: `npx create-db`
 
-datasource db {
-  provider = "postgresql"
-  url      = "postgresql://fzfakir:daromRIKAF@localhost:5432/ecomdash_db?schema=public"
-}
-
-
 generator client {
   provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model Customer {
@@ -71,4 +70,13 @@ model OrderItem {
   product Product @relation(fields: [productId], references: [id])
 
   @@map("order_items")
+}
+model Admin {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  password  String
+  createdAt DateTime @default(now())
+
+  @@map("admins")
 }
