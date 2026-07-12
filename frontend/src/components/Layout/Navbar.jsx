@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Navbar() {
   const [active, setActive] = useState("general");
+  const navigate = useNavigate();
 
   const scrollToSection = (id) => {
     setActive(id);
@@ -14,6 +16,11 @@ export default function Navbar() {
         block: "start",
       });
     }
+  };
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
   };
 
   const getButtonStyle = (id) => ({
@@ -73,7 +80,7 @@ export default function Navbar() {
               style={getButtonStyle("categories")}
               onClick={() => scrollToSection("categories")}
             >
-              Categories
+              Catégories
             </button>
 
             <button
@@ -88,9 +95,17 @@ export default function Navbar() {
           </div>
 
           <div
-            className="border-start ms-2"
+            className="border-start mx-2"
             style={{ height: "24px" }}
           ></div>
+
+          <button
+            type="button"
+            className="btn btn-outline-danger rounded-pill fw-semibold px-4 py-2"
+            onClick={handleLogout}
+          >
+            Déconnexion
+          </button>
 
         </div>
 
