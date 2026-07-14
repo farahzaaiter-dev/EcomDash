@@ -1,11 +1,25 @@
 const { PrismaClient } = require("@prisma/client");
 const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
 const prisma = new PrismaClient();
 
+// Génération du JWT
+const generateToken = (admin) => {
+  return jwt.sign(
+    {
+      id: admin.id,
+      email: admin.email,
+    },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: "7d",
+    }
+  );
+};
+
 // ================= REGISTER =================
 const register = async (name, email, password) => {
-  // Check if email already exists
   const existingAdmin = await prisma.admin.findUnique({
     where: { email },
   });
@@ -14,10 +28,8 @@ const register = async (name, email, password) => {
     throw new Error("This email is already registered.");
   }
 
-  // Encrypt password
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  // Create admin
   const admin = await prisma.admin.create({
     data: {
       name,
@@ -26,10 +38,15 @@ const register = async (name, email, password) => {
     },
   });
 
+  const token = generateToken(admin);
+
   return {
-    id: admin.id,
-    name: admin.name,
-    email: admin.email,
+    token,
+    admin: {
+      id: admin.id,
+      name: admin.name,
+      email: admin.email,
+    },
   };
 };
 
@@ -52,10 +69,15 @@ const login = async (email, password) => {
     throw new Error("Email or password is incorrect.");
   }
 
+  const token = generateToken(admin);
+
   return {
-    id: admin.id,
-    name: admin.name,
-    email: admin.email,
+    token,
+    admin: {
+      id: admin.id,
+      name: admin.name,
+      email: admin.email,
+    },
   };
 };
 

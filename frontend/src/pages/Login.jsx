@@ -8,22 +8,31 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
+ const handleLogin = async (e) => {
+  e.preventDefault();
 
-    try {
-      const response = await api.post("/auth/login", {
-        email,
-        password,
-      });
+  try {
+    const response = await api.post("/auth/login", {
+      email,
+      password,
+    });
 
-      alert(response.data.message);
+    // Sauvegarder le token JWT
+    localStorage.setItem("token", response.data.token);
 
-      navigate("/dashboard");
-    } catch (error) {
-      alert(error.response?.data?.message || "Login failed.");
-    }
-  };
+    // Sauvegarder les informations de l'admin (optionnel)
+    localStorage.setItem(
+      "admin",
+      JSON.stringify(response.data.admin)
+    );
+
+    alert(response.data.message);
+
+    navigate("/dashboard");
+  } catch (error) {
+    alert(error.response?.data?.message || "Login failed.");
+  }
+};;
 
   return (
     <div className="container-fluid vh-100">
@@ -83,7 +92,6 @@ function Login() {
                   required
                 />
               </div>
-
               <button
                 type="submit"
                 className="btn w-100 text-white fw-semibold"
@@ -91,11 +99,8 @@ function Login() {
               >
                 Sign In
               </button>
-
             </form>
-
             <hr className="my-4" />
-
             <p className="text-center mb-0">
               Don't have an account?{" "}
               <Link

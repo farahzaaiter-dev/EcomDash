@@ -5,12 +5,13 @@ const register = async (req, res) => {
   try {
     const { name, email, password } = req.body;
 
-    const admin = await authService.register(name, email, password);
+    const result = await authService.register(name, email, password);
 
     res.status(201).json({
       success: true,
       message: "Compte créé avec succès.",
-      admin,
+      token: result.token,
+      admin: result.admin,
     });
   } catch (error) {
     res.status(400).json({
@@ -25,12 +26,13 @@ const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const admin = await authService.login(email, password);
+    const result = await authService.login(email, password);
 
     res.status(200).json({
       success: true,
       message: "Connexion réussie.",
-      admin,
+      token: result.token,
+      admin: result.admin,
     });
   } catch (error) {
     res.status(401).json({

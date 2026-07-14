@@ -1,7 +1,8 @@
 const express = require('express');
 const router = express.Router();
 const kpiController = require('../controllers/kpiController');
-
+const authMiddleware = require("../middleware/authMiddleware");
+router.use(authMiddleware);
 // Chiffre d'affaires total
 //http://localhost:5000/api/kpis/revenue
 router.get('/revenue', kpiController.getRevenue);
