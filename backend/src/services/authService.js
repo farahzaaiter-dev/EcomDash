@@ -3,27 +3,55 @@ const bcrypt = require("bcrypt");
 
 const prisma = new PrismaClient();
 
-const login = async (email, password) => {
-  // Rechercher l'administrateur par email
-  const admin = await prisma.admin.findUnique({
-    where: {
+// ================= REGISTER =================
+const register = async (name, email, password) => {
+  // Check if email already exists
+  const existingAdmin = await prisma.admin.findUnique({
+    where: { email },
+  });
+
+  if (existingAdmin) {
+    throw new Error("This email is already registered.");
+  }
+
+  // Encrypt password
+  const hashedPassword = await bcrypt.hash(password, 10);
+
+  // Create admin
+  const admin = await prisma.admin.create({
+    data: {
+      name,
       email,
+      password: hashedPassword,
     },
   });
 
-  // Vérifier si l'administrateur existe
+  return {
+    id: admin.id,
+    name: admin.name,
+    email: admin.email,
+  };
+};
+
+// ================= LOGIN =================
+const login = async (email, password) => {
+  const admin = await prisma.admin.findUnique({
+    where: { email },
+  });
+
   if (!admin) {
-    throw new Error("Email ou mot de passe incorrect.");
+    throw new Error("Email or password is incorrect.");
   }
 
-  // Vérifier le mot de passe
-  const isPasswordValid = await bcrypt.compare(password, admin.password);
+  const isPasswordValid = await bcrypt.compare(
+    password,
+    admin.password
+  );
 
   if (!isPasswordValid) {
-    throw new Error("Email ou mot de passe incorrect.");
+    throw new Error("Email or password is incorrect.");
   }
 
-  // Retourner les informations de l'administrateur
   return {
     id: admin.id,
     name: admin.name,
@@ -32,5 +60,6 @@ const login = async (email, password) => {
 };
 
 module.exports = {
+  register,
   login,
 };

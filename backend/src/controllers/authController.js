@@ -1,5 +1,26 @@
 const authService = require("../services/authService");
 
+// Register
+const register = async (req, res) => {
+  try {
+    const { name, email, password } = req.body;
+
+    const admin = await authService.register(name, email, password);
+
+    res.status(201).json({
+      success: true,
+      message: "Compte créé avec succès.",
+      admin,
+    });
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
+
+// Login
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -8,7 +29,7 @@ const login = async (req, res) => {
 
     res.status(200).json({
       success: true,
-      message: "Connexion réussie",
+      message: "Connexion réussie.",
       admin,
     });
   } catch (error) {
@@ -20,5 +41,6 @@ const login = async (req, res) => {
 };
 
 module.exports = {
+  register,
   login,
 };

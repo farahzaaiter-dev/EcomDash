@@ -1,4 +1,4 @@
-import api from "../api/api";
+import api from "../services/api";
 
 // Chiffre d'affaires
 export const getRevenue = async () => {
